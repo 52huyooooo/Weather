@@ -36,7 +36,7 @@ public class Province extends DataSupport {
         this.provinceName = provinceName;
     }
 
-    Province() {
+    public Province() {
     }
 
     public Province(int id, String provinceName, int provinceCode) {
