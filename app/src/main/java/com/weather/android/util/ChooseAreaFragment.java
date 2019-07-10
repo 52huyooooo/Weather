@@ -30,9 +30,9 @@ import okhttp3.Response;
 
 public class ChooseAreaFragment extends Fragment {
     // vars
-    final int LEVEL_PROVINCE = 0;
-    final int LEVEL_CITY = 1;
-    final int LEVEL_COUNTY = 2;
+    public static final int LEVEL_PROVINCE = 0;
+    public static final int LEVEL_CITY = 1;
+    public static final int LEVEL_COUNTY = 2;
 
     private ProgressDialog progressDialog;
     private TextView titleText;
@@ -117,7 +117,7 @@ public class ChooseAreaFragment extends Fragment {
         backButton.setVisibility(View.VISIBLE);
         cityList = DataSupport.where("provinceid = ?",
                 String.valueOf(selectedProvince.getId())).find(City.class);
-        if (provinceList.size() > 0) {
+        if (cityList.size() > 0) {
             dataList.clear();
             for (City city : cityList) {
                 dataList.add(city.getCityName());
@@ -127,7 +127,7 @@ public class ChooseAreaFragment extends Fragment {
             currentLevel = LEVEL_CITY;
         } else {
             int provinceCode = selectedProvince.getProvinceCode();
-            String address = "http://guolin.tech/api/china"+provinceCode;
+            String address = "http://guolin.tech/api/china"+"/"+provinceCode;
             queryFromServer(address, "city");
         }
     }
@@ -147,7 +147,7 @@ public class ChooseAreaFragment extends Fragment {
         } else {
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
-            String address = "http://guolin.tech/api/china"+provinceCode+"/"+cityCode;
+            String address = "http://guolin.tech/api/china/"+provinceCode+"/"+cityCode;
             queryFromServer(address, "county");
         }
     }
@@ -182,7 +182,6 @@ public class ChooseAreaFragment extends Fragment {
                     });
                 }
             }
-
             @Override
             public void onFailure(Call call, IOException e){
                 getActivity().runOnUiThread(new Runnable() {
@@ -204,7 +203,7 @@ public class ChooseAreaFragment extends Fragment {
         progressDialog.show();
     }
     private void closePragressDialog(){
-        if (progressDialog == null){
+        if (progressDialog != null){
             progressDialog.dismiss();
         }
     }
